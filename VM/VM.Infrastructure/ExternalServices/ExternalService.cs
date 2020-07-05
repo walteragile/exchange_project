@@ -18,7 +18,7 @@ namespace VM.Infrastructure.ExternalServices
         public ExternalService(IConfiguration configuration, ILogger<ExternalService> logger)
         {
             _client = new HttpClient();
-            _baseURL = configuration.GetValue<string>("ExternalUrl");
+            _baseURL = configuration.GetValue<string>("ExternalURL");
             _logger = logger;
         }
 

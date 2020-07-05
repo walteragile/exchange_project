@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VM.Core.Contracts;
+using VM.Core.Entities;
 using VM.Infrastructure.CurrencyManagers;
 using VM.Infrastructure.DataAccess;
 using VM.Infrastructure.ExternalServices;
@@ -30,6 +31,8 @@ namespace VM.API
             services.AddScoped<IExternalService, ExternalService>();
             services.AddScoped<ICurrencyManagerFactory, CurrencyManagerFactory>();
             services.AddScoped<ICurrencyManager, DollarManager>();
+            services.AddScoped<IRepository<ExchangePurchases>, GenericRepository<ExchangePurchases>>();
+            services.AddScoped<IExchangeRepository, ExchangeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

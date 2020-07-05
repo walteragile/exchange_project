@@ -30,6 +30,7 @@ namespace VM.API.Controllers
                 StatusCode = StatusCodes.Status200OK,
                 Content = "<html><head><meta charset=\"UTF-8\"><title>API</title></head><body><h1>Welcome to exchange API :-)</h1><ul>"
                 + "<li>GET localhost:63857/api/{currencyCode} CurrencyCode = usd/brl</li>"
+                + "<li>POST localhost:63857/api/{currencyCode}/{userId}/{amount}</li>"
                 + "</ul></body></html>"
             };
         }
@@ -41,6 +42,26 @@ namespace VM.API.Controllers
             {
                 _currencyController = _currencyControllerFactory.CreateCurrencyController(request.CurrencyCode.ToUpper());
                 return await _currencyController.GetExchange();
+            }
+            catch (ArgumentException argumentException)
+            {
+                _logger.LogError(argumentException, "Invalid currency");
+                return StatusCode(StatusCodes.Status400BadRequest, argumentException.Message);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Unhandled exception");
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
+        [HttpPost, Route("{currencyCode}/{userId}/{amount}")]
+        public async Task<ActionResult<BuyCurrencyResponse>> BuyCurrency(BuyCurrencyRequest request)
+        {
+            try
+            {
+                _currencyController = _currencyControllerFactory.CreateCurrencyController(request.CurrencyCode.ToUpper());
+                return StatusCode(StatusCodes.Status201Created, await _currencyController.BuyCurrency(request.UserId, request.Amount));
             }
             catch (ArgumentException argumentException)
             {

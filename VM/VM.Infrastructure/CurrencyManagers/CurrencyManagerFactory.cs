@@ -7,11 +7,13 @@ namespace VM.Infrastructure.CurrencyManagers
     public class CurrencyManagerFactory : ICurrencyManagerFactory
     {
         private readonly IExternalService _externalService;
+        private readonly IExchangeRepository _repository;
         private readonly ICurrencyManager _dollarManager;
 
-        public CurrencyManagerFactory(IExternalService externalService, ICurrencyManager dollarManager)
+        public CurrencyManagerFactory(IExternalService externalService, IExchangeRepository repository, ICurrencyManager dollarManager)
         {
             _externalService = externalService;
+            _repository = repository;
             _dollarManager = dollarManager;
         }
 
@@ -19,11 +21,11 @@ namespace VM.Infrastructure.CurrencyManagers
         {
             if (currencyCode == "USD")
             {
-                return new DollarManager(_externalService, new Logger<DollarManager>(new LoggerFactory()));
+                return new DollarManager(_externalService, _repository, new Logger<DollarManager>(new LoggerFactory()));
             }
             else if (currencyCode == "BRL")
             {
-                return new RealManager(_dollarManager, new Logger<RealManager>(new LoggerFactory()));
+                return new RealManager(_dollarManager, _repository, new Logger<RealManager>(new LoggerFactory()));
             }
             else
             {

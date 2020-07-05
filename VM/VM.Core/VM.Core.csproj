@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
-    <Folder Include="Services\Requests\" />
-    <Folder Include="Services\Responses\" />
   </ItemGroup>
 
 </Project>

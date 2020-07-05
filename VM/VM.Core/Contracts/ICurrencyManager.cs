@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using VM.Core.Services;
 
 namespace VM.Core.Contracts
 {
     public interface ICurrencyManager
     {
-        
+        string CurrencyCode { get; }
+        string CurrencySymbol { get; }
+        string CurrencyName { get; }
+
+        Task<GetExchangeResponse> GetExchange();
     }
 }
